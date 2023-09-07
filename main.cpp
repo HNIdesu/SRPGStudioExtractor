@@ -2,7 +2,7 @@
 #include "Utility.h"
 #include <iostream>
 
-#define TARGETPATH L".\\data.dts"
+#define TARGETPATH L"E:\\Games\\冒险游戏\\戦姫ルルカver1.1\\data.dts"
 #define DECRYPT_KEY_LENGTH 6
 const wchar_t DecryptKey[DECRYPT_KEY_LENGTH]={L'k',L'e',L'y',L's',L'e',L't'};
 

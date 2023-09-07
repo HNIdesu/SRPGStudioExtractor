@@ -70,6 +70,7 @@ unsigned int DSRTArchiver::ExtractEntry(DSRTEntry entry,unsigned char* buffer,co
 
 DSRTArchiver::DSRTArchiver(const wchar_t* filepath){
     #define BUFFERSIZE 32768
+    DSRTEntry entry;
     file_path=filepath;
     HANDLE hFile=CreateFileW(filepath,GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);
     if(!hFile)
@@ -78,6 +79,12 @@ DSRTArchiver::DSRTArchiver(const wchar_t* filepath){
     DWORD bytesRead;
     entries=new std::vector<DSRTEntry>();
     ReadFile(hFile,buffer,24,nullptr,nullptr);
+    {
+        entry.entry_name=L"Project.srpgs";
+        entry.offset=*((uint32_t*)(buffer+20))+168;
+        entry.length=GetFileSize(hFile,nullptr)-entry.offset;
+        entries->push_back(entry);
+    }
     if(!BufferEquals(buffer,DSRTSignature,4))
         throw L"Signature error";
     is_encrypted=*((UINT*)(buffer+4))==1;
@@ -97,6 +104,7 @@ DSRTArchiver::DSRTArchiver(const wchar_t* filepath){
         SetFilePointer(hFile,curFrag->position,nullptr,FILE_BEGIN);
         ReadFile(hFile,buffer,4,nullptr,nullptr);
         UINT resource_group_count=*((UINT*)buffer);
+        if(curFrag->length==0)continue;
         UINT info_length=(resource_group_count)*4;
         UINT offset=0;
 
@@ -137,7 +145,6 @@ DSRTArchiver::DSRTArchiver(const wchar_t* filepath){
 
                 ReadFile(hFile,buffer,info_length,nullptr,nullptr);
                 for(int k=0;k<file_count;k++){
-                    DSRTEntry entry;
                     entry.entry_name=curFrag->entry_name;
                     entry.entry_name+=L'/';
                     if(k>0){
