@@ -1,0 +1,31 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe 生成可执行文件",
+            "command": "g++.exe",
+            "args": [
+                "-masm=intel",
+                "-g",
+                "-m32",
+                "-o",
+                "${workspaceFolder}\\output\\srpgextractor.exe",
+                "${workspaceFolder}\\DSRTArchiver.cpp",
+                "${workspaceFolder}\\Utility.cpp",
+                "${workspaceFolder}\\main.cpp",
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "调试器生成的任务。"
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -1,14 +1,23 @@
 #include "DSRTArchiver.h"
 #include "Utility.h"
 #include <iostream>
+#include <windows.h>
 
-#define TARGETPATH L"E:\\Games\\冒险游戏\\戦姫ルルカver1.1\\data.dts"
 #define DECRYPT_KEY_LENGTH 6
 const wchar_t DecryptKey[DECRYPT_KEY_LENGTH]={L'k',L'e',L'y',L's',L'e',L't'};
 
 using namespace std;
 int main(int argc,char** argv){
-    DSRTArchiver archiver(TARGETPATH);
+    if(argc<2){
+        cout<<"Usage: "<<argv[0]<<" data.dts"<<endl;
+        cout<<"Example: "<<argv[0]<<" game\\data.dts"<<endl;
+        return 0;
+    }
+    int inputFileNameLength=(int)strlen(argv[1]);
+    wchar_t* inputFilePath=new wchar_t[inputFileNameLength+1];
+    inputFilePath[MultiByteToWideChar(GetACP(),0,argv[1],inputFileNameLength,inputFilePath,inputFileNameLength+1)]=L'\0';
+    DSRTArchiver archiver(inputFilePath);
+    delete[] inputFilePath;
     wchar_t* filepath=new wchar_t[256];
     wchar_t* entry_name=new wchar_t[256];
     wchar_t* dir_path=new wchar_t[512];
