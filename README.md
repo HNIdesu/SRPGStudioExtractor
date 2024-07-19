@@ -1,1 +1,1 @@
-# SRPGStudioExtractor
+Now I have rewritten the script in Python and added some new features. You can find it at [SRPGStudioReverseTools](https://github.com/HNIdesu/SRPGStudioReverseTools).
